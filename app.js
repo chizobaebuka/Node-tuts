@@ -1,14 +1,36 @@
-// npm - global command, comes with node
-// npm --version
+const { readFile, writeFile } = require('fs');
+const util = require('util')
+const readFilePromise = util.promisify(readFile)
+const writeFilePromise = util.promisify(writeFile)
 
-// local dependency - to be used only in this project
-// npm i <packageName>
+const start = async () => {
+    try {
+        const first = await readFilePromise('./Content/first.txt', 'utf-8')
+        const second = await readFilePromise('./Content/second.txt', 'utf-8')
+        await writeFilePromise('./Content/result-mind-grenade.txt', `This is Awesome: ${first} ${second}`)
+        console.log(first, second);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-// global dependency - to be used within the system in any project
-// npm i -g <packageName>
-// sudo npm install -g <packageName>
+start()
 
-const _ = require("lodash")
+// const getText = (path) => {
+//     return new Promise((resolve, reject) => {
+//         readFile(path, 'utf-8', (err, data) => {
+//             if (err) {
+//                 reject(err)
+//             } else {
+//                 resolve(data)
+//             }
+//         })
+//     })
+// }
 
-const items = [1, [2, [3, [4]]]];
-const newItems = _.flattenDeep(items)
+// getText('./Content/first.txt')
+//     .then(result => console.log(result))
+//     .catch(err => console.log(err))
+
+
+
